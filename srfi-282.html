@@ -6,12 +6,12 @@ SPDX-License-Identifier: MIT
 -->
   <head>
     <meta charset="utf-8">
-    <title>SRFI 282: Missing R7RS (Type) Predicates</title>
+    <title>SRFI 282: Additional R7RS (Type) Predicates</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
     <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
     <meta name="viewport" content="width=device-width"></head>
   <body>
-    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>282: Missing R7RS (Type) Predicates</h1>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>282: Additional R7RS (Type) Predicates</h1>
 
 <p>by Artyom Bologov</p>
 
@@ -33,6 +33,22 @@ SPDX-License-Identifier: MIT
   “types” have no respective predicates.  This SRFI defines them.
 </p>
 
+<h2 id="toc">Table of contents</h2>
+<ul>
+  <li><a href="#rationale">Rationale</a></li>
+  <li>
+    <a href="#specification">Specification</a>
+    <ul>
+      <li> <a href="#spec--environment">procedure (environment? object) → boolean</a></li>
+      <li><a href="#spec--parameter">procedure (parameter? object) → boolean</a></li>
+      <li><a href="#spec--continuation">procedure (continuation? object) → boolean</a></li>
+    </ul>
+  </li>
+  <li><a href="#implementation">Implementation</a></li>
+  <li><a href="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#copyright">Copyright</a></li>
+</ul>
+
 <h2 id="issues">Issues</h2>
 
 <p>??? Optional section that may point out things to be resolved.  This
@@ -43,90 +59,70 @@ will not appear in the final SRFI.</p>
 <p>
   The discussion of types in Scheme is often predicate-reliant,
   including in the <a href="https://standards.scheme.org/r7rs-html5/index.html#3.2">in R<sup>7</sup> “Disjointness of types” section</a>.
-  Types are reliably represented by these predicates.
+  Types are reliably represented by their respective predicates.
   (This is, in part, why the <a href="https://srfi.schemers.org/srfi-253/srfi-253.html">author’s own SRFIs</a> rely on predicates for typing.)
-  The predicate set essentially defines what types of object semantically “exist.”
-  If there’s no predicate, there is no (programmatically-reachable) type.
 </p>
 
 <p>
-  Thus more predicates are needed than R<sup>7</sup>RS Small provides.
-  There are types that do actually exist, but have no predicates proving their existence.
+  But more predicates are needed than R<sup>7</sup>RS Small provides.
+  There are types that do actually exist (i.e. are programmatically reachable,)
+  but have no predicates referring to their existence.
   Some implementations provide these predicates, but there’s no portable way to use them.
-  Thus this SRFI: to have a common ground set of predicates for entities that otherwise exist in Scheme.
+  Thus this SRFI: to have a common ground set of predicates for entities that otherwise exist in most Schemes.
+  And implicitly exist in the standard too.
 </p>
 
 <h2 id="specification">Specification</h2>
 
 <p>
-  There are only four exported procedures in this SRFI.
+  The whole SRFI is split into sub-libraries, one predicate per library.
+  This is because not all implementations support first-class objects these predicates check.
+  Portable code relying on this SRFI can thus do:
 </p>
 
-<h2 id="spec--library">(srfi 282) procedure (library? object) → boolean</h2>
+<pre>
+(cond-expand
+ ((library (srfi 282 environment)) #| Use environment? here|#)
+ ((library (srfi 282 parameter))   #| Use parameter? here|#))
+</pre>
 
-<p>
-  This predicate returns true whenever given
-  a <a href="https://standards.scheme.org/r7rs-html5/index.html#5.6">library</a> <var>object</var>,
-  and false otherwise.
-</p>
-
-<p>
-  While libraries are part of the “meta-language” of Scheme, they are semantic entities.
-  They might as well be represented in the run-time.
-  Modules are present in many implementations, or otherwise,
-  so there’s a need for a predicate checking for them.
-</p>
-
-<h2 id="spec--environment">(srfi 282) procedure (environment? object) → boolean</h2>
+<h2 id="spec--environment">(srfi 282 environment) procedure (environment? object) → boolean</h2>
 
 <p>
   Returns true whenever given an environment <var>object</var>, as returned by
   <a href="https://standards.scheme.org/r7rs-html5/index.html#environment">environment</a>
-  and <a href="https://standards.scheme.org/r7rs-html5/index.html#6.12">the
-  like</a>, and false otherwise.
+  and <a href="https://standards.scheme.org/r7rs-html5/index.html#6.12">the like</a>,
+  and false otherwise.
 </p>
 
-<p>
-  Lack of a predicate for environments is an interesting omission in the standard.
-  These are first-class entities of a distinct type.
-  They deserve a predicate.
-</p>
-
-<h2 id="spec--parameter">(srfi 282) procedure (parameter? object) → boolean</h2>
+<h2 id="spec--parameter">(srfi 282 parameter) procedure (parameter? object) → boolean</h2>
 
 <p>
   Returns true whenever <var>object</var> is a parameter object, and
   false otherwise.
 </p>
 
-<p>
-  While parameters are almost invariably represented as procedures,
-  they might happen to be distinct callable objects.
-  Thus the need for a predicate.
-</p>
-
-<h2 id="spec--syntax">(srfi 282) procedure (syntax-transformer? object) → boolean</h2>
+<h2 id="spec--continuation">(srfi 282 continuation) procedure (continuation? object) → boolean</h2>
 
 <p>
-  Returns true whenever <var>object</var> is a syntax transformer,
-  like the ones returned by <a href="https://standards.scheme.org/r7rs-html5/index.html#syntax-rules">syntax-rules</a>.
-  Returns false otherwise.
-</p>
-
-<p>
-  While, again, these objects are not necessarily representable in all implementations,
-  being essentially part of the Scheme meta-language
-  some implementations do represent them as “macro” and “syntax” objects reachable programmatically, so a
-  predicate is necessary.
+  Returns true whenever <var>object</var> is a continuation (such as created by <code>call/cc</code>,)
+  false otherwise.
 </p>
 
 <h2 id="spec--no">Not Included</h2>
 
-<code>record?</code> and <code>record-type?</code>.
-While records and their types are also part of the standard type repertoire,
-they have respective SRFIs,
-like <a href="https://srfi.schemers.org/srfi-237/srfi-237.html#inspection-layer">SRFI-237</a>
-and <a href="https://srfi.schemers.org/srfi-76/srfi-76.html#:~:text=%28c%20%28make%2Dwidget%20n%29%29%29%29%29-,Reflection,-A%20set%20of">SRFI-76</a>.
+<p>
+  <code>record?</code> and <code>record-type?</code>.
+  While records and their types are also part of the standard type repertoire,
+  they have respective SRFIs,
+  like <a href="https://srfi.schemers.org/srfi-237/srfi-237.html#inspection-layer">SRFI-237</a>
+  and <a href="https://srfi.schemers.org/srfi-76/srfi-76.html#:~:text=%28c%20%28make%2Dwidget%20n%29%29%29%29%29-,Reflection,-A%20set%20of">SRFI-76</a>.
+</p>
+
+<p>
+  Earlier versions of this SRFI contained <code>library?</code> and <code>syntax-transformer?</code> predicates,
+  but these were removed as too meta and impossible to obtain in standard code.
+</p>
 
 <h2 id="implementation">Implementation</h2>
 
@@ -139,10 +135,9 @@ and <a href="https://srfi.schemers.org/srfi-76/srfi-76.html#:~:text=%28c%20%28ma
 </p>
 
 <pre>
-(define (library? object) #f)
 (define (environment? object) #f)
 (define (parameter? object) #f)
-(define (syntax-transformer? object) #f)
+(define (continuation? object) #f)
 </pre>
 
 <h2 id="acknowledgements">Acknowledgements</h2>
@@ -150,6 +145,16 @@ and <a href="https://srfi.schemers.org/srfi-76/srfi-76.html#:~:text=%28c%20%28ma
 <p>
   Thanks to numerous individuals that contributed and continue to contribute to R<sup>7</sup>RS.
   This SRFI is by no means an attack on them, but rather a suggestion highlighting the lack of predicates for otherwise important entities.
+</p>
+
+<p>
+  Thanks to Marc Nieper-Wißkirchen, Peter Bex, and Peter McGoron for a discussion on some of the earlier / removed predicates
+  (<code>library?</code>, <code>syntax-transformer?</code>)
+  and for suggestion of <code>continuation?</code>.
+</p>
+
+<p>
+  Thanks to Wolfgang Corcoran-Mathe for a correct assessment of the language and tone of the SRFI initially being overboard.
 </p>
 
 <p>

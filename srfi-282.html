@@ -39,9 +39,10 @@ SPDX-License-Identifier: MIT
   <li>
     <a href="#specification">Specification</a>
     <ul>
-      <li> <a href="#spec--environment">procedure (environment? object) → boolean</a></li>
+      <li><a href="#spec--environment">procedure (environment? object) → boolean</a></li>
       <li><a href="#spec--parameter">procedure (parameter? object) → boolean</a></li>
       <li><a href="#spec--continuation">procedure (continuation? object) → boolean</a></li>
+      <li><a href="#spec--no">Not Included</a></li>
     </ul>
   </li>
   <li><a href="#implementation">Implementation</a></li>
@@ -86,7 +87,7 @@ will not appear in the final SRFI.</p>
  ((library (srfi 282 parameter))   #| Use parameter? here|#))
 </pre>
 
-<h2 id="spec--environment">(srfi 282 environment) procedure (environment? object) → boolean</h2>
+<h3 id="spec--environment">(srfi 282 environment) procedure (environment? object) → boolean</h3>
 
 <p>
   Returns true whenever given an environment <var>object</var>, as returned by
@@ -95,21 +96,21 @@ will not appear in the final SRFI.</p>
   and false otherwise.
 </p>
 
-<h2 id="spec--parameter">(srfi 282 parameter) procedure (parameter? object) → boolean</h2>
+<h3 id="spec--parameter">(srfi 282 parameter) procedure (parameter? object) → boolean</h3>
 
 <p>
   Returns true whenever <var>object</var> is a parameter object, and
   false otherwise.
 </p>
 
-<h2 id="spec--continuation">(srfi 282 continuation) procedure (continuation? object) → boolean</h2>
+<h3 id="spec--continuation">(srfi 282 continuation) procedure (continuation? object) → boolean</h3>
 
 <p>
   Returns true whenever <var>object</var> is a continuation (such as created by <code>call/cc</code>,)
   false otherwise.
 </p>
 
-<h2 id="spec--no">Not Included</h2>
+<h3 id="spec--no">Not Included</h3>
 
 <p>
   <code>record?</code> and <code>record-type?</code>.

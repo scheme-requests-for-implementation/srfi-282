@@ -1,7 +1,7 @@
 
 # SPDX-FileCopyrightText: 2026 Arthur A. Gleckler
 # SPDX-License-Identifier: MIT
-* SRFI 282: Missing R7RS (Type) Predicates
+* SRFI 282: Additional R7RS (Type) Predicates
 
 ** by Artyom Bologov
 
@@ -9,7 +9,7 @@
 
 keywords: [[https://srfi.schemers.org/?keywords=miscellaneous][Miscellaneous]]
 
-This repository hosts [[https://srfi.schemers.org/srfi-282/][SRFI 282]]: Missing R7RS (Type) Predicates, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
+This repository hosts [[https://srfi.schemers.org/srfi-282/][SRFI 282]]: Additional R7RS (Type) Predicates, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /draft/ status.
 

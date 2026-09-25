@@ -104,13 +104,6 @@ will not appear in the final SRFI.</p>
   false otherwise.
 </p>
 
-<h3 id="spec--continuation">(srfi 282 continuation) procedure (continuation? object) → boolean</h3>
-
-<p>
-  Returns true whenever <var>object</var> is a continuation (such as created by <code>call/cc</code>,)
-  false otherwise.
-</p>
-
 <h3 id="spec--no">Not Included</h3>
 
 <p>
@@ -139,7 +132,6 @@ will not appear in the final SRFI.</p>
 <pre>
 (define (environment? object) #f)
 (define (parameter? object) #f)
-(define (continuation? object) #f)
 </pre>
 
 <h2 id="acknowledgements">Acknowledgements</h2>
@@ -151,8 +143,7 @@ will not appear in the final SRFI.</p>
 
 <p>
   Thanks to Marc Nieper-Wißkirchen, Peter Bex, and Peter McGoron for a discussion on some of the earlier / removed predicates
-  (<code>library?</code>, <code>syntax-transformer?</code>)
-  and for suggestion of <code>continuation?</code>.
+  (<code>library?</code>, <code>syntax-transformer?</code>, <code>continuation?</code>.).
 </p>
 
 <p>
